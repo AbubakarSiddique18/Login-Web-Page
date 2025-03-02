@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg,  #043c8f, #d36314);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+            margin: 0;
+            color: #fff;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .login-box {
+            background: linear-gradient(135deg, #d36314, #043c8f);
+            padding-left: 30px;
+           padding-right: 30px;
+           margin-top: 50px;
+            
+           margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .logo {
+            width: 150px;
+            margin-bottom: 45px;
+            margin-top: 20px;
+            border-radius: 50%;
+        }
+
+        h2 {
+            margin-bottom: 50px;
+            color: #ffffff;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .textbox {
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .textbox input {
+            width: 85%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 2px solid #bebdbd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            background-color: #fff;
+            color: #333;
+        }
+        #togglePassword {
+            position: absolute;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .checkbox-container {
+            text-align: left;
+            align-items: center;
+            justify-content: start;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        .checkbox-container input {
+            margin-right: 10px;
+            padding-left: 50px
+        }
+        .btn {
+            width: 85%;
+            padding: 12px;
+            background-color: #d36314;
+            color: #f9f9fc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #043c8f;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #d36314;
+        }
+        @media (max-width: 600px) {
+            .login-box {
+                padding: 30px;
+            }
+
+            .logo {
+                width: 100px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .textbox input {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .btn {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+    </style>
+    <div class="login-container">
+        <div class="login-box">
+            <img src="./images/logo.jpg" alt="Logo" class="logo">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="textbox">
+                    <input type="text" id="username" placeholder="Enter Username" name="username" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" id="password" placeholder="Enter Password" name="password" required>
+                    <i id="togglePassword" class="fas fa-eye"></i> 
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="rememberMe"> <label for="rememberMe">Remember Me</label>
+                </div><br>
+                <button type="submit" class="btn">Login</button>
+                <p><a href="./forgetpassword.html">Forgot Password?</a></p>
+                <p>Don't have an account? <a href="./registration.html">Registration</a></p>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const correctUsername = "abubakar";
+            const correctPassword = "abubakar786";
+            
+            if (username === correctUsername && password === correctPassword) {
+                alert("Login Successful!");
+                if (rememberMe) {
+                    alert("You will be remembered for next time.");
+                }
+                window.location.href = "deshboard.html";  
+            } else {
+                alert("Wrong username or password!");
+            }
+        });
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('password');
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+            if (passwordField.type === 'password') {
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+    </script>
+</body>
+</html>

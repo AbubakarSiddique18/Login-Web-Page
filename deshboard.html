@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Main Operation Console Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg,  #043c8f, #d36314);
+            color: #faf7f7;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(135deg,   #d36314, #043c8f);
+            color: #f3f5f8;
+            padding: 30px;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-header {
+            text-align: center;
+        }
+
+        .sidebar-header .sidebar-logo {
+            width: 120px;
+            border-radius: 50%;
+        }
+
+        .pic {
+            width: 180px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+        }
+
+        .sidebar h3 {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin: 20px 0;
+        }
+
+        .sidebar-menu li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .sidebar-menu li a:hover {
+            color: #0918f5;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 50px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #f36709;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #0a1499;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #f36709;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            color: white;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ece0e0;
+        }
+
+        table th {
+            background-color: #db6f26;
+        }
+
+        table td button {
+            padding: 5px 10px;
+            background-color: #043c8f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table td button:hover {
+            background-color: #f36709;
+        }
+
+        #fileUploadForm {
+            margin-top: 20px;
+        }
+
+        #fileUploadForm input {
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+        }
+    </style>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="./images/logo.jpg" alt="Logo" class="sidebar-logo">
+                <h3>Welcome, Abubakar</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#profileSection">Profile</a></li>
+                <li><a href="#fileManagementSection">Manage Files</a></li>
+                <li><a href="#messagesSection">Messages</a></li>
+                <li><a href="#notificationsSection">Notifications</a></li>
+                <li><a href="#settingsSection">Settings</a></li>
+                <li><a href="#logout" id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="main-content">
+            <div id="profileSection" class="section">
+                <h2>Profile Information</h2>
+                <div id="profileContent">
+                    <img src="./images/Abubakar.jpg" alt="pic" class="pic">
+                    <p><strong>Name:</strong> Abubakar</p>
+                    <p><strong>Phone No:</strong>+86 19047084603</p>
+                    <p><strong>Email:</strong> abubakar2022718@gmail.com</p>
+                    <p><strong>Major:</strong> Software</p>
+                </div>
+            </div>
+            <div id="fileManagementSection" class="section">
+                <h2>Manage Files</h2>
+                <button id="showFileUploadBtn">Upload File</button>
+                <button id="createFileBtn">Create New File</button>
+                <form id="fileUploadForm" style="display: none;">
+                    <input type="file" id="fileUpload" name="file">
+                    <button type="submit">Upload</button>
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Size</th>
+                            <th>Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileTableBody"></tbody>
+                </table>
+            </div>
+
+            <div id="messagesSection" class="section">
+                <h2>Messages</h2>
+                <ul id="messageList"></ul>
+            </div>
+
+            <div id="notificationsSection" class="section">
+                <h2>Notifications</h2>
+                <ul id="notificationList"></ul>
+            </div>
+
+            <div id="settingsSection" class="section">
+                <h2>Settings</h2>
+                <p>Configure your account settings here.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navLinks = document.querySelectorAll('.sidebar-menu li a');
+            const sections = document.querySelectorAll('.section');
+            const fileTableBody = document.getElementById('fileTableBody');
+            const fileUploadInput = document.getElementById('fileUpload');
+            const fileUploadForm = document.getElementById('fileUploadForm');
+            const fileUploadBtn = document.getElementById('showFileUploadBtn');
+            const createFileBtn = document.getElementById('createFileBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            let files = [
+                { id: 1, name: 'example.txt', size: '14 KB', uploaded: '2025-01-01' },
+                { id: 2, name: 'project.zip', size: '1.2 MB', uploaded: '2025-01-10' },
+            ];
+
+            function renderFileTable() {
+                fileTableBody.innerHTML = '';
+                files.forEach(file => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${file.name}</td>
+                        <td>${file.size}</td>
+                        <td>${file.uploaded}</td>
+                        <td>
+                            <button onclick="renameFile(${file.id})">Rename</button>
+                            <button onclick="deleteFile(${file.id})">Delete</button>
+                            <button onclick="downloadFile('${file.name}')">Download</button>
+                            <button onclick="shareFile('${file.name}')">Share</button>
+                        </td>
+                    `;
+                    fileTableBody.appendChild(row);
+                });
+            }
+
+            fileUploadBtn.addEventListener('click', function () {
+                fileUploadForm.style.display = fileUploadForm.style.display === 'none' ? 'block' : 'none';
+            });
+
+            fileUploadForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const file = fileUploadInput.files[0];
+                if (file) {
+                    const newFile = {
+                        id: Date.now(),
+                        name: file.name,
+                        size: `${(file.size / 1024).toFixed(2)} KB`,
+                        uploaded: new Date().toISOString().split('T')[0],
+                    };
+                    files.push(newFile);
+                    fileUploadInput.value = '';
+                    renderFileTable();
+                }
+            });
+
+            createFileBtn.addEventListener('click', function () {
+                const fileName = prompt('Enter the new file name:');
+                if (fileName) {
+                    const newFile = {
+                        id: Date.now(),
+                        name: fileName,
+                        size: '0 KB',
+                        uploaded: new Date().toISOString().split('T')[0],
+                    };
+                    files.push(newFile);
+                    renderFileTable();
+                }
+            });
+
+            window.renameFile = function (id) {
+                const file = files.find(f => f.id === id);
+                const newName = prompt('Enter new file name:', file.name);
+                if (newName) {
+                    file.name = newName;
+                    renderFileTable();
+                }
+            };
+
+            window.deleteFile = function (id) {
+                if (confirm('Are you sure you want to delete this file?')) {
+                    files = files.filter(file => file.id !== id);
+                    renderFileTable();
+                }
+            };
+
+            window.downloadFile = function (fileName) {
+                alert(`Downloading file: ${fileName}`);
+            };
+
+            window.shareFile = function (fileName) {
+                alert(`Sharing file: ${fileName}`);
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    sections.forEach(section => {
+                        section.style.display = section.id === target ? 'block' : 'none';
+                    });
+                });
+            });
+
+            logoutBtn.addEventListener('click', function (event) {
+                event.preventDefault();
+                alert("Logging out...");
+                window.location.href = "login.html";
+            });
+
+            function initDashboard() {
+                sections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                document.getElementById('fileManagementSection').style.display = 'block'; 
+                renderFileTable();
+            }
+
+            initDashboard();
+        });
+    </script>
+</body>
+</html>
